@@ -12,6 +12,14 @@ class App extends Component {
         name: '学员为空',
       },
     ],
+
+    return_data: [
+      {
+        id: 1,
+        name: '学员为空',
+      },
+    ],
+
   };
 
   AddStudent = () => {
@@ -64,7 +72,7 @@ class App extends Component {
       })
       .then((result)=>{
         console.log(result);
-        this.setState({data:result})
+        this.setState({return_data:result})
       })
       .catch((error) => {
         console.error(error);
@@ -77,6 +85,11 @@ class App extends Component {
         <div>
           分组列表
           <button onClick={this.Grouping}>学员分组</button>
+          {this.state.return_data.map((item, i) => (
+            <li key={i}>
+              {item.id}：{item.name}
+            </li>
+          ))}
         </div>
 
         <div>
