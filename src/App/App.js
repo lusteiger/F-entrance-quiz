@@ -5,11 +5,11 @@ class App extends Component {
   state = {
     buttonStatus: 'button',
     name: '添加学员',
-    id:1,
+    id: 1,
     data: [
       {
         id: 1,
-        name: '添加学员',
+        name: '学员为空',
       },
     ],
   };
@@ -36,7 +36,6 @@ class App extends Component {
             },
           ],
         });
-        this.setState({id:id+1});
       } else if (id > 1) {
         this.setState({
           data: this.state.data.concat([
@@ -46,25 +45,46 @@ class App extends Component {
             },
           ]),
         });
-        this.setState({id:id+1});
       }
+      this.setState({ id: id + 1 });
     }
+  };
+
+  Grouping = () => {
+    const URL = 'http://localhost:8080/students/grouping';
+    fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(this.state.data),
+      headers: {
+        'content-type': 'application/json'
+    }
+    })
+      .then((result) => {
+        return result.json(); 
+      })
+      .then((result)=>{
+        console.log(result);
+        this.setState({data:result})
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   render() {
     return (
       <div data-testid="app" className="App">
-
-      
+        <div>
+          分组列表
+          <button onClick={this.Grouping}>学员分组</button>
+        </div>
 
         <div>
           学员列表
           {this.state.data.map((item, i) => (
-            <div key={i}>
-              {item.id}
-              <br />
-              {item.name}
-            </div>
+            <li key={i}>
+              {item.id}：{item.name}
+            </li>
           ))}
           <input
             type={this.state.buttonStatus}
